@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; background-color: black !important;}
+      h1, h2, h3 { font-family: 'Yanone Kaffeesatz'; font-weight: normal; }
+      .back-h1 h1 { background-color: black; padding: 20px}
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-slide-content {
+        background-size: 100%;
+      }
+      .black { background-color: black }
+      .almostblack { background-color: #091513 }
+      .invert { color: white; }
+      .strike { text-decoration: line-through;}
+      .switcher h3 { color: #d3d3d3 }
+      .switcher h3 strong { color: black }
+      .bad { background-color: #AA1914; color: white;}
+      .oki { background-color: #3D9972; color: white;}
+      .bgh { background-size: auto 100%;}
+
+      canvas.red { border: 3px solid red }
+      canvas.whitebg {background-color: white}
+      canvas.bottom { position:absolute; bottom: 0px }
+      canvas.absolute { position:absolute; }
+
+      .larger code { font-size: 30px }
+      .medium code { font-size: 25px }
+
+      .l20 { width: 20%; float: left }
+      .l30 { width: 30%; float: left }
+      .l40 { width: 40%; float: left }
+      .l50 { width: 50%; float: left }
+      .l60 { width: 60%; float: left }
+      .l70 { width: 70%; float: left }
+      .r30 { float: right; width: 30%; }
+      .r40 { float: right; width: 40%; }
+      .r50 { float: right; width: 50%; }
+      .r70 { float: right; width: 70%; }
+      .r60 { float: right; width: 60%; }
+      .r80 { float: right; width: 80%; }
+
+      .testcontainers { background-color: #0e1f26}
+      .growbot { background-color: #6A4CA6}
+      .gaultlt { background-color: #0a2c36 }
+      .fullscreen {
+        padding: 0 !important;
+      }
+
+      .manybulls h2 {
+        margin: 25px 0;
+      }
+
+      .manybulls h3 {
+        margin: 15px 0;
+      }
+
+      .splash {
+        color: white;
+        background-color: black;
+      }
+
+      .splash h1 {
+        font-size: 70px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle, splash
+# Pragmatic Continuous Delivery
+## Day I
+
+---
+class: center, middle, splash
+# Continuous Delivery 101
+
+---
+background-image: url(scrum_vs_cd.png)
+
+---
+background-image: url(devops_engineer.png)
+
+---
+.l30.switcher[
+### **DevOps**
+]
+
+---
+.l30.switcher[
+### DevOps
+### **Kanban**
+]
+???
+- Kanban is a system for visualizing work (optimizing value stream via specific techniques)
+
+---
+.l30.switcher[
+### DevOps
+### Kanban
+### **Continuous Integration**
+]
+
+---
+.l30.switcher[
+### DevOps
+### Kanban
+### Continuous Integration
+### **Continuous Delivery**
+]
+.r70[
+## What?
+### A methodology for reducing the **cost**, **time** and **risk** of delivering incremental changes to users.
+## Qualities
+### 1. Software is always in shippable state once code is pushed into the mainline (including infrastructure, configuration, data)
+### 2. Push-button deployment for any desired version
+]
+???
+**What**
+- cost (optimize, automate)
+- time (eliminate bottlenecks and waste, reducing wip)
+- risk (small increments, reliability (no manual steps, consisteny), rollbacks, resiliance, mmtd, mmtr)
+-
+1. No need to wait for off-peak hours; non-ready features are deployed too;
+2. Including old versions, rollbacks
+
+---
+.l30.switcher[
+### DevOps
+### Kanban
+### Continuous Integration
+### Continuous Delivery
+### **Continuous Deployment**
+]
+???
+- So Scrum vs. CD?
+- CDep is great, as it force you to eliminate manual and slow stuff. Every commit goes right away to prod.
+
+---
+class: center, middle
+# Why Continuous Delivery?
+???
+- a matter of survival for startups! (limited $, exploring ideas)
+- competition! (startups beating enterprises because money is accessible. Citadele vs 4finance)
+- competition! (customers are eager for cool things, e.g. Askfm)
+- custom development is uber expensive
+
+---
+class:center, middle
+##  We measure IT performance along two main dimensions: throughput of code and stability of systems. Throughput is measured by how frequently a team is able to deploy code and how fast it can move from committing code to deploying it. Stability is measured by how quickly the system can recover from downtime and how many changes succeed, versus how many fail.
+### State of DevOps Report (2017)
+???
+establishes trust
+
+---
+class: center, middle
+> ## High-performing organizations are deploying code 30 times more frequently, with 50 percent fewer failures than their lower-performing counterparts.
+### [State of DevOps Report](https://puppetlabs.com/sites/default/files/2014-state-of-devops-report.pdf) (2014)
+
+---
+class: center, middle
+# Amazon
+## new code is deployed every 11.6 seconds during a normal business day (3K production deployments per day)
+
+---
+class: center, middle
+## As a member of the AWS engineering team, my first impressions are probably best summarized as fast. Decisions are made quickly. New ideas end up in code and available to customers at a speed that just makes the pace of enterprise IT look like continental drift. In a previous role, I remember (half) jokingly saying “we ship twice a decade whether customers need it or not.” Now new features are going out so frequently they are often hard to track.
+## (c) James Hamilton
+### https://perspectives.mvdirona.com/2016/03/a-decade-of-innovation
+
+---
+class: center, middle
+# Facebook
+## each of 5,000 engineers commits to trunk HEAD at least once a day and the code at trunk HEAD is pushed to production once daily
+
+---
+class: center, middle
+# Etsy
+## 50 deploys/day
+
+---
+class: center, middle
+# Google
+## 15K engineers work from the HEAD revision of a single Perforce trunk. 50% of the code will be changed in any given month. 8 minutes after you commit code it's live in production.
+
+
+---
+class: bgh
+background-image:url(innovation.png)
+???
+Only 5% of companies really need 99.999% availability and ready to pay for it.
+
+
+---
+class: center, middle, splash
+# Anatomy of Deployment Pipeline
+
+---
+background-image: url(pipeline_classic.png)
+???
+Fail-fast
+
+---
+background-image: url(pipeline_classic.png)
+## All changes to production go through deployment pipeline
+???
+Easy to ensure - you just restrict deployment from local machines.
+### Every change triggers the feedback process
+
+---
+background-image: url(pipeline_classic.png)
+## All changes to production go through version control (from mainline!)
+???
+- No RBs! No "quick fixes"!
+- No RBs because of double bug fixing. In different codebases. Do you write tests twice too?
+- No releases from feature branches.
+
+---
+background-image: url(pipeline_classic.png)
+## Build only once
+???
+- Every build is potential release (vs. SNAPSHOT, BETA etc.)
+- means that your application is environment agnostic. No switches, Profiles etc.
+- DNS example (api.dev.events)
+- Configuration discovery
+
+---
+background-image: url(pipeline_classic.png)
+## Test on production-like environment (or TiP)
+???
+- TiP - testing in production
+
+---
+background-image: url(pipeline_classic.png)
+## Deploy the same way to every environment
+???
+And the same version! :-) "LATEST" in the middle of pipeline
+
+---
+class: center, middle, splash
+# Commit Stage
+
+---
+# Continuous Integration compliance checklist
+
+--
+
+### 1. All developers push the code at least once a day (to Mainline)
+
+--
+
+### 2. All developers run tests locally before pushing the code (and never push the code if tests fail)
+
+--
+
+### 3. **Every change** results in a build and tests run
+???
+- not daily, every H. but every build!
+--
+
+### 4. Developers never push the code if a build is broken (why the build is broken if #3 is true?)
+
+--
+
+### 5. Build is **always** fixed within ten minutes of it going red
+???
+- ABR - always be ready
+
+---
+class: center, middle, bad
+# I will work in a branch and sync with Mainline every day.
+## (and push when my feature is ready)
+???
+- But what if no else pushes? How do you sync with others?
+
+---
+class: center, middle, bad
+# I will use Mainline as a primary tool for identifying regression in my code
+
+---
+# CI changes dynamics of a game
+### - No painful merges (try aggressive refactoring w/o CI)
+
+--
+
+### - Small increments (easier code review, more opportunities for pairing)
+
+--
+
+### - Evergreen Mainline requires engineering rigor (TDD, preflight quality control)
+
+--
+
+### - Feature branching becomes unnecessary (brings back synchronous code reviews)
+
+--
+
+### - Faster feedback from Sheriff on Duty (SoD)
+???
+- all workstreams can see and use your code - awesome!
+
+--
+
+### - Faster feedback from downstream quality gates
+
+---
+class: center, middle
+## The most controversial thing I say is that devs should work on trunk rather than feature branches... but I'm right.
+## (c) Jez Humble
+### https://twitter.com/jasonhand/status/860206341528354816
+
+---
+class: center, middle
+## One thing that I really like about open-source is that it really allows different people to work together. We don't have to like each other. And sometimes we really don't like each other.
+## (c) Linus Torvalds
+### http://www.ted.com/talks/linus_torvalds_the_mind_behind_linux
+???
+- That's why Linus developed GIT. To let work work in isolation.
+- We are OK with Git, but isolation is evil. We have to collaborate and integrate as often as we can.
+
+---
+class: center, middle
+# Example pipeline:
+
+---
+class: bgh
+background-image:url(jenkins_pipeline.png)
+???
+- Every version is release candidate
+- The most annoying and complex task is button push
+- We propagate the version to downstream jobs
+
+---
+class: bgh
+background-image:url(jenkins_pipeline.png)
+<canvas width="300" height="400" class="red" />
+???
+CI forces us to push!
+
+---
+class: center, middle, challenge
+# Dealing with unfinished functionality
+
+---
+class: black, invert
+background-image:url(toggles.png)
+# Feature Toggles
+
+---
+class: black, invert
+background-image:url(toggles.png)
+# Feature Toggles
+### - Release Toggles
+### - Business Toggles
+???
+- RT - usually  removed after release
+- BT - stays in code
+
+---
+class: black, invert
+background-image:url(toggles.png)
+# Use cases
+### - Decoupling deployment from release
+???
+- decoupling, then do smoke tests on prod (can be automatically)
+
+--
+
+### - Enabling feature for subgroup of users
+???
+- QA, product owner
+
+--
+
+### - A/B testing
+???
+- by region, 1%
+
+--
+
+### - Addition to circuit breaking
+???
+- E.g. too much users, feature is disabled.
+
+---
+class: bgh
+background-image:url(ff4j.png)
+???
+- Tracking feature usage
+- Custom toggle flipping strategies (specific date)
+- groups (enable many features in one go)
+
+---
+class: bgh
+background-image:url(ff4j_console.png)
+
+---
+class: larger, middle
+```java
+if (ff4j.exist("new-feature")) {
+    // new-feature exists
+}
+
+if (ff4j.check("new-feature")) {
+    // new-feature is toggled
+}
+```
+
+---
+background-image:url(launchdarkly.png)
+???
+- A/B testing
+- let's you define goals and measure the performance of your features
+
+---
+background-image:url(split.png)
+
+---
+class: bad, invert, center, middle
+# Anti-pattern: Code Freeze Ceremony
+
+---
+class: bad, invert, center, middle
+# Anti-pattern: Feature Toggles introduce additional failure mode
+
+---
+class: center, middle
+> ### Release toggles are a useful technique and lots of teams use them. However they should be your last choice when you're dealing with putting features into production. Your first choice should be to break the feature down so you can safely introduce parts of the feature into the product. The advantages of doing this are the same ones as any strategy based on small, frequent releases. You reduce the risk of things going wrong and you get valuable feedback on how users actually use the feature that will improve the enhancements you make later.
+### (c) Martin Fowler at [Bliki](http://martinfowler.com/bliki/FeatureToggle.html)
+???
+- Try breaking the feature down and try to make increments visible to customer asap to get feedback from the real world and adapt.
+- Keeping a fat feature under toggle can lead to big bank release. Avoid this.
+
+---
+class: center, middle, challenge
+# Breaking changes
+
+---
+class: center, middle
+# According to Continuous Delivery rules, there should be no breaking changes.
+???
+And no feature branches :-)
+
+---
+class: center, middle
+# Branch by Abstraction vs. .strike[Branch by Source Control]
+???
+Instead of changing component...
+
+---
+class: bgh
+background-image:url(bba.png)
+
+---
+class: bgh
+background-image:url(bba2.png)
+
+---
+class: bgh
+background-image:url(bba3.png)
+
+---
+class: bgh
+background-image:url(bba4.png)
+
+---
+class: bgh
+background-image:url(bba5.png)
+???
+Large-scale refactoring done right
+
+
+---
+class: center, middle, bgh
+background-image:url(strangler.png)
+
+---
+class: center, middle
+# What about changing APIs?
+
+---
+class: center, middle
+# APIs, like diamonds, are forever.
+
+---
+class: bgh
+background-image:url(api_calendar.jpg)
+???
+Calendar of API changes
+
+---
+background-image:url(semver.png)
+
+---
+class: center, middle
+# Meaningful commits
+
+---
+# 4W
+## **W**ho
+## **W**hen
+## **W**hat
+## **W**hy
+## .strike[How]
+
+---
+class: medium
+.l20[
+# 4W
+## **W**ho
+## **W**hen
+## **W**hat
+## **W**hy
+## .strike[How]
+]
+.r80[
+```sh
+$ git log --oneline -5 --author cbeams --before "Fri Mar 26 2009"
+
+e5f4b49 Re-adding AutoConfigurationPostProcessor
+2db0f12 fixed two build-breaking issues
+147709f Tweaks to dependency files
+7f96f57 polishing
+2d30f32 implemented facebook integration
+```
+
+&nbsp;
+
+```sh
+$ git log --oneline -5 --author pwebb --before "Sat Aug 30 2014"
+
+5ba3db6 Add automatic configuration with reasonable defaults
+84564a0 Improve stability of DateTime tests
+e142fd1 Set fixed Guava version from 16.0.* to 16.0.1
+ac8326d Polish mockito usage according to [best practices]
+2d30f32 Implement facebook authentication [FB-5332]
+```
+### -> [How to Write a Git Commit Message](http://chris.beams.io/posts/git-commit/)
+]
+???
+- How is clear from code.
+- When you see that given app version produces exceptions, Git logs will help you a lot.
+- Usually you need Gitlogs when you do not have much time. And when someone went to vacation.
+
+---
+class: bgh
+background-image:url(jenkins_pipeline.png)
+???
+
+--
+
+<canvas width="380" height="400" class="red" />
+???
+We have to run unit tests twice - before pushing the code, and then on CI.
+
+---
+class: center, middle
+# 6 Deadly Sins of A Unit Test
+???
+Setting common ground: A unit tests is a test that exercises a unit. Sometimes unit is a single class, sometimes – composition of them.
+
+---
+# 1/6 Unstable
+### OS-specifics
+
+--
+
+### Wildcard dependency versions
+???
+build becomes a lottery
+
+--
+
+### Shared state in tests
+???
+- test scoping, passing parameters via methods, constructor...
+- mark tests in a group
+
+--
+
+### System Time
+???
+- time mocking, time traveling (marking time travel tests)
+
+--
+
+### Asynchrony
+
+--
+
+### Concurrency
+???
+
+
+---
+background-image:url(awaitility.png)
+???
+explicit waits, like in Selenium
+
+---
+
+class: bgh
+background-image:url(thread_weaver.png)
+
+---
+class: middle, larger
+```java
+public class FlawedList<T> extends ArrayList<T> {
+  public boolean putIfAbsent(T object) {
+    boolean absent = !super.contains(object);
+    if (absent) {
+      super.add(object);
+    }
+    return absent;
+  }
+}
+```
+
+---
+class: middle, larger
+```java
+@Test
+public void testPutIfAbsent() {
+  FlawedList<String> list = new FlawedList<String>();
+  list.putIfAbsent("foo");
+  list.putIfAbsent("foo");
+  assertThat(list.size(), is(1));
+}
+```
+
+---
+class: middle, larger
+```java
+FlawedList<String> list = new FlawedList<String>();
+
+@Test(threadPoolSize = 5, invocationCount = 20)
+public void testList() {
+  list.putIfAbsent("foo");
+  assertThat(list.size(), is(1));
+}
+```
+
+---
+class: middle, larger
+```java
+public class WeavedFlawedListTest {
+  private FlawedList<String> list;
+
+  @ThreadedBefore public void before() {
+    list = new FlawedList<String>();
+  }
+
+  @ThreadedMain public void mainThread() {
+    list.putIfAbsent("foo");
+  }
+
+  @ThreadedSecondary public void secondThread() {
+    list.putIfAbsent("foo");
+  }
+
+  @ThreadedAfter public void after() {
+    assertEquals(1, list.size());
+  }
+}
+```
+
+---
+class: middle, larger
+```java
+public class FlawedList<T> extends ArrayList<T> {
+  public boolean putIfAbsent(T object) {
+    boolean absent = !super.contains(object);
+    if (absent) {
+      super.add(object);
+    }
+    return absent;
+  }
+}
+```
+
+---
+.l50[
+# 2/6 Unreliable
+### No tests - bad
+### Bad tests - even worse
+]
+.r50[
+![](goos.jpg)
+]
+???
+- passing tests usually do not indicate readiness to deploy. But failing tests do not indicate non-readiness :-)))
+- 100% coverage doesn't mean anything
+
+---
+background-image:url(pitest.png)
+
+---
+.l50[
+# 3/6 Slow
+### Implicit waiting
+### Computation-intensive
+
+# 4/6 Stupid
+### Code coverage boosters
+### Fuzzing
+]
+
+--
+
+.r50[
+# 5/6 Sequential
+### Not designed for concurrency from day I
+### No time to build test grid
+# 6/6 Sociable
+### Relying on concrete classes
+### Relying on external systems
+]
+???
+Sociable - we write the tests assuming everything other than that unit is working correctly.
+
+---
+class: switcher
+# Being sociable is OK, if:
+### Dependency on non-trivial execution context (e.g. Spring)
+### File system
+### SMTP client
+### SQL repository
+### Redis repository
+???
+If your class talks to file system and you have never saw it writing a file - can you trust your tests?
+
+---
+class: switcher
+# Being sociable is OK, if:
+### **Dependency on non-trivial execution context (e.g. Spring)**
+### File system
+### SMTP client
+### SQL repository
+### Redis repository
+???
+- E.g. custom BeanPostProcessor - small, custom context. Extract to library.
+
+---
+class: switcher
+.l60[
+# Being sociable is OK, if:
+### Dependency on non-trivial execution context (e.g. Spring)
+### **File system**
+### SMTP client
+### SQL repository
+### Redis repository
+]
+.r40[
+![](jimfs.png)
+]
+
+---
+class: switcher
+# Being sociable is OK, if:
+### Dependency on non-trivial execution context (e.g. Spring)
+### File system
+### **SMTP client**
+### SQL repository
+### Redis repository
+
+---
+class: switcher
+.l60[
+# Being sociable is OK, if:
+### Dependency on non-trivial execution context (e.g. Spring)
+### File system
+### SMTP client
+### **SQL repository**
+### Redis repository
+]
+.r40[
+![](h2.png)
+]
+
+---
+class: switcher
+.l60[
+# Being sociable is OK, if:
+### Dependency on non-trivial execution context (e.g. Spring)
+### File system
+### SMTP client
+### SQL repository
+### **Redis repository**
+]
+
+---
+background-image:url(docker.png)
+
+---
+background-image:url(docker-redis.png)
+???
+Problem: version missing!
+
+---
+class: testcontainers
+background-image:url(testcontainers.png)
+
+
+---
+class: medium, middle
+```java
+class RedisBackedCacheTest {
+
+    @Rule
+    public GenericContainer redis = new GenericContainer("redis:3.0.6")
+                                            .withExposedPorts(6379);
+    private Cache cache;
+
+    @Before
+    public void setUp() {
+        Jedis jedis = new Jedis(redis.getIpAddress(), redis.getMappedPort(6379));
+        cache = new RedisBackedCache(jedis, "test");
+    }
+
+    @Test
+    public void findsAnInsertedValueInCache() {
+        String key = "foo";
+        cache.put(key, "FOO");
+        Optional<String> cacheHit = cache.get(key, String.class);
+        assertThat(cacheHit, isPresent());
+    }
+
+}
+```
+
+---
+class: medium, middle
+```java
+class RedisBackedCacheTest {
+
+    @ClassRule
+    public static GenericContainer redis = new GenericContainer("redis:3.0.6")
+                                            .withExposedPorts(6379);
+    private Cache cache;
+
+    @Before
+    public void setUp() {
+        Jedis jedis = new Jedis(redis.getIpAddress(), redis.getMappedPort(6379));
+        cache = new RedisBackedCache(jedis, "test");
+    }
+
+    @Test
+    public void findsAnInsertedValueInCache() {
+        String key = UUID.randomUUID().toString()
+        cache.put(key, "FOO");
+        Optional<String> cacheHit = cache.get(key, String.class);
+        assertThat(cacheHit, isPresent());
+    }
+
+}
+```
+???
+- Specific containers available
+- Can wrap your Mongo, Cassandra or RabbitMQ
+
+---
+background-image:url(wiremock.png)
+
+
+---
+class: medium, middle
+```java
+class UberSmartHttpClientTest {
+
+  @Rule
+  public WireMockRule wireMockRule = new WireMockRule(8089);
+
+  @Test
+  public void exampleTest() {
+      stubFor(get(urlEqualTo("/my/resource"))
+              .withHeader("Accept", equalTo("text/xml"))
+              .willReturn(aResponse()
+                  .withStatus(200)
+                  .withHeader("Content-Type", "text/xml")
+                  .withBody("<response>Some content</response>")));
+
+      Result result = uberSmartHttpClient.doSomeHttpRequest();
+
+      assertTrue(result.wasSuccessful());
+  }
+
+}
+```
+
+---
+class: medium
+# Fault injection
+```java
+stubFor(get(urlEqualTo("/delayed")).willReturn(
+        aResponse()
+                .withStatus(200)
+                .withFixedDelay(2000)));
+```
+???
+- simulating faults - very hard to achieve when you do integration testing
+- actually, we never do IT. For every service provider we create a test double.
+
+---
+class: bgh
+background-image:url(mountebank.png)
+
+---
+class: center, middle, splash
+# Acceptance Testing Stage
+
+---
+class: bgh
+background-image:url(jenkins_pipeline.png)
+
+--
+
+<canvas width="300" height="200" class="red absolute" style="left: 620px; top: 120px" />
+???
+challenges:
+- start/stop dependencies with tests w/o polluting Jenkins vm with installations
+- run it as many times as I need, mb on different machines
+- run the same on dev machine.
+- every dev has its own sandbox.
+
+---
+class: bgh
+background-image:url(at_dependencies.png)
+
+---
+class: larger
+.l50[
+```
+# docker-compose.yml
+version: '2'
+services:
+  app:
+    build: .
+    ports:
+     - "5000:5000"
+    volumes:
+     - .:/code
+    depends_on:
+     - redis
+     - mysql
+  redis:
+    image: redis:2.8
+  mysql:
+    image: mysql:5.6
+  ...
+```
+]
+.r50[
+![](docker_compose.png)
+]
+???
+Good thing, since Docker can live on production.
+
+---
+class: bgh
+background-image:url(docker_compose_up_redis.png)
+???
+- spin up dependencies
+- run the app
+- run the tests (e.g. via API, UI or both)
+- shutdown
+- CircleCI builds code in a fresh, on-demand, and isolated Linux container.
+
+---
+class: black
+background-image:url(docker_compose_scale.png)
+???
+- now, I don't have to push code to run acceptance tests!
+- actually, you can completely avoid centralized testing environments now
+
+---
+class: bad
+# Dockerfiles
+```
+FROM nginx
+RUN rm -f /etc/nginx/conf.d/*
+
+RUN apt-get update && apt-get install -my \
+  supervisor \
+  curl \
+  wget \
+  php5-curl \
+  php5-fpm \
+  php5-gd \
+  php5-memcached \
+  php5-mysql \
+  php5-mcrypt \
+  php5-sqlite \
+  php5-xdebug \
+  php-apc
+
+RUN sed -i "s/user = www-data/user = root/" /etc/php5/fpm/pool.d/www.conf
+RUN sed -i "s/group = www-data/group = root/" /etc/php5/fpm/pool.d/www.conf
+RUN sed -i '/^;clear_env = no/s/^;//' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i '/^;ping\.path/s/^;//' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i '/^;pm\.status_path/s/^;//' /etc/php5/fpm/pool.d/www.conf
+```
+
+---
+background-image:url(packer_docker_builder.png)
+
+---
+background-image:url(sysdig.png)
+
+---
+class: bad, invert, center, middle
+# Sequential Deployment Pipeline
+
+---
+class: bad, invert, center, middle
+# Testing starts only after the feature is ready.
+???
+Testing must be performed immediately, not AFTER feature is ready. Testing may take too much time, which will introduce pressure if deadlines are pushing. Feature may end up untestable. Too big-to-test feature is harder to test than its part.
+
+---
+class: center, middle, splash
+# Build, promote, deploy
+
+---
+class: bgh
+background-image:url(jenkins_pipeline.png)
+
+
+--
+
+<canvas width="650" height="200" class="red absolute" style="left: 450px; bottom: 150px" />
+???
+- Why RPM - uberjars are usually enough, but once you have to distribute more files with JAR (e.g. init scripts)- you need an archive.
+- Ansible loves YUM!
+
+---
+.l50[
+# YUM repository
+### - Nexus
+### - Artifactory
+### - [yum-s3-plugin](https://github.com/jbraeuer/yum-s3-plugin)
+### - [yum-s3-iam](https://github.com/seporaitis/yum-s3-iam)
+]
+.r50[
+# RPM packager
+### - [fpm](https://github.com/jordansissel/fpm)
+### - [gradle-ospackage-plugin](https://github.com/nebula-plugins/gradle-ospackage-plugin)
+]
+
+
+---
+class: black, bgh
+background-image:url(tree.png)
+
+---
+class: medium
+### supervisor.conf
+```supervisord
+[program:app]
+command=java -port=3000 -logdir=/var/log/app/ -jar /opt/app/current/app.jar
+user=deployer
+autostart=true
+autorestart=true
+startsecs=10
+startretries=3
+stdout_logfile=/var/log/app/stdout.log
+stderr_logfile=/var/log/app/stderr.log
+```
+???
+Autorestart!!! Win time before admin on duty can help!!!
+
+---
+background-image:url(plug.png)
+???
+- let it crash!
+
+---
+### deploy-playbook.yml
+```ansible
+- hosts: all
+  serial: 1
+  tasks:
+   - name: install the app
+     yum: name=app-{{version}} state=present
+     notify:
+      - restart supervisord
+  handlers:
+    - name: restart supervisord
+      service: name=supervisord state=restarted
+
+    - name: start the app
+      supervisorctl: name=app state=started
+
+    - name: health check
+      health_check:
+          url: "{{inventory_hostname}}/health"
+          delay_between_tries: 5
+          max_retries: 20
+          expected_regexp: "alive"
+  pre_tasks:
+    - name: disable nagios alerts for this host webserver service
+      nagios: action=disable_alerts host={{ inventory_hostname }} services=webserver
+
+    - name: disable the server in haproxy
+      haproxy: state=disabled host={{ inventory_hostname }}
+
+    - name: stop the app
+      supervisorctl: name=app state=stopped
+```
+???
+-- deploy one by one
+-- graceful shutdown!!! http request must be completed (Jetty, StatisticsHandler polling), Amazon termination notice
+-- then we add node to HAPROXY and re-enable monitorning.
+
+---
+class: larger, middle
+`$ ansible-playbook deploy-playbook.yml -i /hosts/acceptance --extra-vars "version=1.1.2"`
+
+`$ ansible-playbook deploy-playbook.yml -i /hosts/exploratory --extra-vars "version=1.1.2"`
+
+`$ ansible-playbook deploy-playbook.yml -i /hosts/production --extra-vars "version=1.1.2"`
+???
+- You can run another playbook that installs necessary stuff on the box.
+- Ask.fm style deployment: pipeline step - deploy single node, deploy 50%, deploy the rest.
+
+---
+class: center, middle
+# ChatOps
+![](hubot.jpg)
+
+---
+
+### - bot: building **1.2.2** from commit [[add healtchecks](https://github.com/eduardsi/cucumber-3g/commit/fb60f27628b3eddbc81f94faf3a56ffa77692868)] by @eduardsi
+
+--
+
+### - bot: **1.2.2** passed [commit stage]()
+
+--
+
+### - bot: **1.2.2** passed [acceptance tests]()
+
+--
+
+### - bot: **1.2.2** ready to be promoted to [exploratory testing]()
+
+--
+
+### - $ promote 1.2.2
+
+--
+
+### - bot: **1.2.2** is available at http://exploratory.app.io/1.2.2
+
+### - $ promote 1.2.2 --single 50% 100%
+
+
+---
+### - $ features list
+### - bot: /facebook-registration (disabled)
+###&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/twitter-registration (enabled, 100%)
+
+--
+
+### - $ features enable facebook-registration 10%
+
+--
+
+### - $ features list
+### - bot: /facebook-registration (enabled 10%)
+###&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/twitter-registration (enabled, 100%)
+
+---
+class: medium
+<canvas width="1000" height="20" class="red absolute" style="top: 170px" />
+### supervisor.conf
+```supervisord
+[program:app]
+command=java -port=3000 -log.dir=/var/log/app/ -jar /opt/app/current/app.jar
+user=deployer
+autostart=true
+autorestart=true
+startsecs=10
+startretries=3
+stdout_logfile=/var/log/app/stdout.log
+stderr_logfile=/var/log/app/stderr.log
+```
+???
+- PLEASE! Application must start with a reasonable defaults. Defaults must be printed out upon start into the log file!
+- Parameters that must be provided are well-documented. Maybe wiki, ideally in code too.
+- Otherwise you start app, it crashes with NPEs, you pass param, wrong format etc.
+
+---
+class: medium
+# Arg4j
+```java
+  @Option(name="-port", usage="HTTP port the application will run on")
+  public Integer port;
+  ...
+  @Option(name="-log.dir", usage="A directory where logs will be written to")
+  public File logDir;
+  ...
+```
+```
+$ java -jar app.jar -wrong
+```
+
+```
+"-wrong" is not a valid option
+Application [options]
+ -port   VAL  : HTTP port the application will run on
+ -logDir FILE : A directory where logs will be written to
+```
+
+---
+### deploy-playbook.yml
+```ansible
+- hosts: all
+  serial: 1
+  tasks:
+   - name: install the app
+     yum: name=app-{{version}} state=present
+     notify:
+      - restart supervisord
+  handlers:
+    - name: restart supervisord
+      service: name=supervisord state=restarted
+
+    - name: start the app
+      supervisorctl: name=app state=started
+
+    - name: health check
+      health_check:
+          url: "{{inventory_hostname}}/health"
+          delay_between_tries: 5
+          max_retries: 20
+          expected_regexp: "alive"
+  pre_tasks:
+    - name: disable nagios alerts for this host webserver service
+      nagios: action=disable_alerts host={{ inventory_hostname }} services=webserver
+
+    - name: disable the server in haproxy
+      haproxy: state=disabled host={{ inventory_hostname }}
+
+    - name: stop the app
+      supervisorctl: name=app state=stopped
+```
+<canvas width="600" height="90" class="red bottom" style="bottom: 177px" />
+
+---
+class: larger
+.l30[
+```
+/health
+
+/version
+
+/info
+
+/metrics
+
+/env
+
+/configprops
+
+/trace
+
+/mappings
+
+/logfile
+
+/dump
+
+/shutdown
+```
+]
+.r70[
+```json
+{
+    "counter.status.200.root": 20,
+    "counter.status.200.metrics": 3,
+    "counter.status.200.star-star": 5,
+    "counter.status.401.root": 4,
+    "gauge.response.star-star": 6,
+    "gauge.response.root": 2,
+    "gauge.response.metrics": 3,
+    "classes": 5808,
+    "classes.loaded": 5808,
+    "classes.unloaded": 0,
+    "heap": 3728384,
+    "heap.committed": 986624,
+    "heap.init": 262144,
+    "heap.used": 52765,
+    "mem": 986624,
+    "mem.free": 933858,
+    "processors": 8,
+    "threads": 15,
+    "threads.daemon": 11,
+    "threads.peak": 15,
+    "threads.totalStarted": 42,
+    "uptime": 494836,
+    "instance.uptime": 489782,
+    "datasource.primary.active": 5,
+    "datasource.primary.usage": 0.25
+}
+```
+]
+???
+/info - arbitrary info (like git commit version)
+
+
+---
+background-image:url(actuator.png)
+
+---
+background-image:url(metrics.png)
+
+---
+<canvas width="600" height="80" class="red bottom" style="bottom: 80px" />
+.l70[
+### - bot: building **1.2.2** from commit [[add healtchecks](https://github.com/eduardsi/cucumber-3g/commit/fb60f27628b3eddbc81f94faf3a56ffa77692868)] by @eduardsi
+### - bot: **1.2.2** passed [commit stage]()
+### - bot: **1.2.2** passed [acceptance tests]()
+### - bot: **1.2.2** ready to be promoted to [exploratory testing]()
+### - $ promote 1.2.2
+### - bot: **1.2.2** is available at http://exploratory.app.io/1.2.2
+### - $ promote 1.2.2 --single 50% 100%
+]
+.r30[
+  ![](hubot.jpg)
+]
+
+---
+background-image:url(query-log-json.png)
+???
+Too much data, can miss something, doesn't work :(
+
+---
+background-image:url(graylog.png)
+???
+People have Graylog and sit with open windows all day :-) Or watch logs after production deployment :-)
+
+
+---
+background-image:url(graylog_alert.png)
+???
+- Streams and Alerts - e.g. one cash miss doesn't mean anything. 20% cache miss - ouch!
+- optimize for sleep: warning vs. error (degrade grafecully [toggles/performance], auto-scale) vs. critical (call admin)
+
+---
+class: bgh
+background-image:url(jenkins_graylog_golive.png)
+
+---
+background-image:url(gor.png)
+???
+- single node can impact too many users...
+- start new node, clone traffic to new node, see exceptions, performance etc.
+
+---
+background-image:url(fluentd_before.png)
+???
+- Sensu - OSS monitoring, provisionable! Used by Tesla!
+- Dashing - dashboards. PROACTIVE vs. REACTIVE. You monitor trends (like CPU utilization, disk space, queue size). If CEO calls you - too late :-)
+- S3 - How slow is is PayPal's API? How slow was PayPal's API yesterday?
+- Pingdom story :-) Performance degradation from diff locations.
+
+
+---
+class: bgh
+background-image:url(fluentd_logo.png)
+???
+Fluentd has four key features that makes it suitable to build clean, reliable logging pipelines:
+- fluentd structures everything as json
+- pluggable architecture, hunders of plugins
+- very lightweight, writtein C
+- relible forwarding, supports failover, setup for HA
+- reactive alerts
+
+---
+background-image:url(fluentd.png)
+
+---
+class: invert, right
+background-image:url(fluentd_example.png)
+### curl -X POST -H "Content-Type: application/json" -d '{"event":"data"}' \
+### localhost:9880/app.request
+???
+- file must be kept in version contorl together with infrastructure
+
+---
+class: bgh
+background-image:url(jenkins_pipeline.png)
+
+--
+class: right
+
+<canvas width="220" height="180" class="red absolute" style="left: 110px; top: 100px" />
+# Sensitive data?
+
+---
+background-image:url(transcrypt.png)
+
+---
+class: larger
+```
+The current repository was configured using transcrypt version 0.9.6
+and has the following configuration:
+
+  CIPHER:   aes-256-cbc
+  PASSWORD: MEu5xyQ&G@/}:D\___1231aala
+
+Copy and paste the following command to initialize a cloned repository:
+
+  transcrypt -c aes-256-cbc -p 'MEu5xyQ&G@/}:D\___1231aala'
+```
+???
+Jenkins should know the password. Stored securely under limited-access user. Actually, can be prompted during every Jenkins machine build.
+
+---
+background-image:url(gitcrypt.png)
+
+---
+class: center, middle
+# What do you do when a developer leaves the team or the repository is compromised?
+???
+- You change password on every production systems.
+- Dependent systems start to fail.
+- Takes time!
+
+---
+class: bgh
+background-image:url(vault.png)
+???
+Tool for managing secrets.
+
+---
+class: bgh
+background-image:url(vault_before.png)
+
+---
+class: bgh
+background-image:url(vault_before_hacked.png)
+
+---
+class: bgh
+background-image:url(vault_after.png)
+
+---
+class: bgh
+background-image:url(vault_after_hacked.png)
+
+---
+class: bgh
+background-image:url(vault_after_revoked.png)
+
+---
+class: bgh
+background-image:url(vault_dbmigrate.png)
+
+---
+class: bgh
+background-image:url(vault_dbmigrate_token.png)
+???
+- All secrets are dynamically generated and leased
+- All operations are logged
+- Fine-grained control which access tokens can access which secrets
+
+---
+class: center, middle
+## Our recommended approach to use Vault with any configuration management tool is to move the secret retrieval and renewal into a runtime process instead of a build time process.
+###- [excerpt](https://www.hashicorp.com/blog/using-hashicorp-vault-with-chef.html) from Vault documentation
+???
+Cannot be stolen, as they do not exist before they are read! Every client has different keys - wohoo.
+
+---
+background-image:url(meldium.png)
+
+---
+# Share access, not passwords!
+## - Okta
+## - OneLogin
+## - Dashlane
+
+---
+class: invert, black, center, middle
+# Dynamic infrastructure
+
+---
+class: bgh
+background-image:url(nginx_1.png)
+???
+- autoscalign!!! sleep well at night :-) now auto-scale across AZs (multi-homed systems, always working)
+- Oprah effect
+
+---
+background-image:url(consul.png)
+
+---
+class: bgh
+background-image:url(nginx_2.png)
+???
+if you define healthchecks, consul will not return dead instances!
+
+---
+class: bgh
+background-image:url(nginx_3.png)
+
+---
+class: bgh
+background-image:url(nginx_4.png)
+
+---
+class: bgh
+background-image:url(nginx_5.png)
+???
+Some values are hard-coded. The goal is for organizations of any size to use git as the backing store, audit trail, and access control mechanism for configuration changes and Consul as the delivery mechanism.
+
+---
+class: bgh
+background-image:url(nginx_6.png)
+???
+- Application is 100% configuration agnostic. All configuration is passed as environment variables.
+- Consul DNS! 0 TTL by default :-) Nice! Prevents routing to unhealty nodes. Random robin from healty notes.
+
+---
+background-image:url(12factor_env.png)
+???
+The environment is right there. Use it.
+
+---
+class: bgh
+background-image:url(jenkins_pipeline.png)
+
+--
+
+<canvas width="1000" height="150" class="red bottom" />
+
+---
+class: center, middle
+# Reliable deployments require Reliable Deployment System
+???
+pipeline is critical, because critical deployments go through it.
+
+---
+class: center, middle
+# All changes to Jenkins go through version control and Jenkins can be rebuilt in automated fashion
+???
+- 3W
+- Means there are no manual changes, plugins installs via UI.
+
+---
+class: larger
+# Job DSL Plugin
+```groovy
+def project = 'quidryan/aws-sdk-test'
+def branchApi = new URL("https://api.github.com/repos/${project}/branches")
+def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
+branches.each {
+    def branchName = it.name
+    def jobName = "${project}-${branchName}".replaceAll('/','-')
+    job(jobName) {
+        scm {
+            git("git://github.com/${project}.git", branchName)
+        }
+        steps {
+            maven("test -Dproject.name=${project}/${branchName}")
+        }
+    }
+}
+```
+
+---
+background-image:url(gradle-jenkins-plugin.png)
+
+---
+class: center, middle
+# TTD and TTR metrics are defined by SLA of the most critical system
+???
+- HA across AZ
+- Are you 100% your "recovery plan" works?
+- Do you have disaster recovery plan for the Jenkins, as for apps?
+- Do you monitor Jenkins, as your apps? Disk space trends etc.
+- collect MMTR, MTTD metrics
+
+
+---
+class: center, middle
+# Metadata survives the crash (build number, logs, history)
+???
+
+---
+class: center, middle
+# Slaves survive the crash
+
+---
+class: center, middle
+# All changes to Jenkins are pre-flight tested
+
+---
+class: center, middle
+# Each team has their own Jenkins and owns underlying infrastructure
+???
+- 100 Apps are build on a single Jenkins
+- 100 Jenkins instances on single VM - good luck!
+
+---
+class: center, middle
+# Hardware is never a bottleneck
+
+---
+class: center, middle
+# Jenkins is either auto-scalable or easy to scale
+### Consider [Jenkins EC2 plugin](https://wiki.jenkins-ci.org/display/JENKINS/Amazon+EC2+Plugin)
+???
+runs new slaves automatically on EC2 and kills them when not needed.
+
+---
+class: center, middle
+# Jenkins is at the close proximity with dependencies (which are redundant)
+???
+- DockerHub? Local artifact repository?
+- GitHub fails every year.
+
+---
+background-image:url(githubdown2012.png)
+
+---
+background-image:url(githubdown2012_2.png)
+???
+more than 5 hours of downtime. Your 5H of missed SLA :-)
+
+---
+background-image:url(githubdown2016.png)
+???
+2 hours
+
+---
+class: bgh
+background-image:url(githubdown.png)
+???
+1.2 hours.
+???
+- github backup utilities
+- GitLab
+
+---
+background-image:url(gitlab.png)
+
+---
+class: manybulls
+.l50[
+## Web Testing
+### phantomjs (headless chrome)
+### xvfb
+### [ievms](https://github.com/xdissent/ievms)
+### browsersync
+### saucelabs / browserstack / aws device farm
+### mitmproxy
+## Stress Testing
+### gatling / artillery.io / loader.io / flood.io
+### simian army
+]
+.r50[
+## Resilience
+### hystrix
+### cloudflare
+### (predictive) auto-scaling
+### continuous security
+## Other
+### keybase
+### mailtrap
+### let's encrypt
+### ngrok / localtunnel
+]
+???
+- Xvfb - in-memory display server
+- 69 GB of IE images
+- git pull directly from dev machines.
+- keybase – main in the middle
+
+---
+class: manybulls
+## Consider
+### zero-time data migrations (flyway, [LHM](https://github.com/soundcloud/lhm), [pt-online-schema-change](https://www.percona.com/doc/percona-toolkit/2.1/pt-online-schema-change.html), testing migrations on replica)
+### immutable infrastructure (vagrant / vmware / ansible / serverspec / bats / packer)
+### terraform
+### dns simple
+### serverless
+### NoCode
+### consumer-driven contracts ([spring cloud contract](http://cloud.spring.io/spring-cloud-contract/spring-cloud-contract.html) in particular)
+???
+- immutable infrastructure protects against slowflake servers.
+
+---
+class: manybulls
+.l60[
+## Implementing Continuous Delivery
+### find a bottleneck, set a goal
+### find the .strike[best] simplest possible solution and get sh%t done. 
+### repeat.
+]
+.r40[
+## More
+### regular devops get-togethers
+### commitment language
+### 80/20
+### reduce batching
+### build quality in
+]
+???
+- Simple means you can always change it later.
+- E.g. adding RAM and CPU instead of running test in parallel.
+
+
+---
+class: center, middle
+# Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.
+
+---
+class: center, middle
+# Continuous Security
+???
+Emergent trend - SecDevOps
+
+---
+# Scanners:
+## - Gitrob (https://github.com/michenriksen/gitrob)
+## - Talisman (https://github.com/thoughtworks/talisman)
+## - Snyk (Finds and fixes vulnerabilities in your dependencies)
+???
+- pem files, rsa, awscreds, shell hist, mysql hist
+- Gitrob REACTIVE: works for existing GitHub repositories (requires push)
+- Talisman PROACTIVE: any repository
+
+---
+background-image:url(gauntlt.png)
+???
+- open port scanner, xss, sql injection, session id length and crypto-function, secure cookies
+- checkout the Gitproject with example attacks, modify them and voila!
+
+---
+class: medium
+```gherkin
+Scenario: Verify server is open on expected set of port
+  When I launch an "nmap" attack with:
+    """
+    nmap -F <hostname>
+    """
+  Then the output should match:
+    """
+    80/tcp\s+open
+    """
+
+Scenario: Verify that there are no unexpected ports open
+  When I launch an "nmap" attack with:
+    """
+    nmap -F <hostname>
+    """
+  Then the output should not contain:
+    """
+    22/tcp
+    25/tcp
+    """
+```
+
+---
+class: medium
+```gherkin
+Scenario: Ensure no anonymous certificates
+  When I launch an "sslyze" attack with:
+    """
+    python <sslyze_path> <hostname>:443
+    """
+  Then the output should not contain:
+    """
+    Anon
+```
+???
+- I ran scanner on my EC2 machines and ALL of them had heartbleed-vulnerable OpenSSL :-)
+- April 2014
+
+---
+background-image:url(pathod.png)
+???
+- pathod - any response that violate HTTP specification
+- pathoc - any request
+- I managed to kill vert.x this way.
+- low-hanging fruits :-) usually, there are many!
+
+---
+background-image:url(hackerone.png)
+???
+MUCH CHEAPER THAN PRO PENETRATION TESTING!
+
+---
+background-image:url(bugcrowd.png)
+
+---
+class: center, middle
+![](mozilla-wiki.png)
+### [WebAppSec/Secure Coding Guidelines](https://wiki.mozilla.org/WebAppSec/Secure_Coding_Guidelines)
+
+---
+class: center, middle
+![](owasp_logo.png)
+### [OWASP Application Security Verification Standard Project](https://www.owasp.org/images/6/67/OWASPApplicationSecurityVerificationStandard3.0.pdf)
+???
+Guidelines.
+
+---
+class: bgh
+background-image:url(owasp.png)
+
+---
+class: center, middle
+## The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free security tools and is actively maintained by hundreds of international volunteers*. It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications. Its also a great tool for experienced pentesters to use for manual security testing.
+
+---
+background-image:url(zap-webdriver.png)
+
+---
+class: center, middle
+# Pre-mortems and Risk storming
+???
+Thinking like a bad guy.
+
+---
+# Books
+### - Continuous Delivery
+### - The Phoenix Project
+### - Lean Enteprise
+
+# Resources
+### - ThoughtWorks Technology Radar
+### - The State of DevOps Report
+
+---
+class: center, middle
+# Thank you!
+
+<!--
+Demos:
+- Transcrypt
+- Keybase
+
+Topics:
+- Serverless
+- Accelerating delivery process (little's law, no QA column, small teams, cross-functional teams with no inter-processes, conway's law, synchronous code reviews, pp beats code reviews, 1 done beats 10 inprogress, conway's law and loosely coupled architectures)
+- Analytics
+-->
+
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+        ratio: '16:9',
+        slideNumberFormat: function (current, total) { return "" }
+      })
+
+    </script>
+  </body>
+</html>
