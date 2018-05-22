@@ -78,7 +78,6 @@
 
 class: center, middle, splash
 # Pragmatic Continuous Delivery
-## Day I
 
 ---
 class: center, middle, splash
@@ -495,7 +494,8 @@ class: center, middle
 class: bgh
 background-image:url(api_calendar.jpg)
 ???
-Calendar of API changes
+- Calendar of API changes
+- super cool features, cheaper services for those who migrate.
 
 ---
 background-image:url(semver.png)
@@ -1034,6 +1034,12 @@ class: bad, invert, center, middle
 Testing must be performed immediately, not AFTER feature is ready. Testing may take too much time, which will introduce pressure if deadlines are pushing. Feature may end up untestable. Too big-to-test feature is harder to test than its part.
 
 ---
+class: bad, invert, center, middle
+# Trying to achieve 100% code coverage
+???
+MTTD! MTTR
+
+---
 class: center, middle, splash
 # Build, promote, deploy
 
@@ -1430,19 +1436,18 @@ Copy and paste the following command to initialize a cloned repository:
 
   transcrypt -c aes-256-cbc -p 'MEu5xyQ&G@/}:D\___1231aala'
 ```
-???
-Jenkins should know the password. Stored securely under limited-access user. Actually, can be prompted during every Jenkins machine build.
-
----
-background-image:url(gitcrypt.png)
 
 ---
 class: center, middle
-# What do you do when a developer leaves the team or the repository is compromised?
-???
-- You change password on every production systems.
-- Dependent systems start to fail.
-- Takes time!
+# Sending sensitive data over insecure channel?
+
+---
+background-image:url(keybase.png)
+
+---
+# Keybase use cases:
+## - Identity fraud (http://bit.ly/fake_linus)
+## - Signing and verification
 
 ---
 class: bgh
@@ -1490,59 +1495,43 @@ class: center, middle
 Cannot be stolen, as they do not exist before they are read! Every client has different keys - wohoo.
 
 ---
-background-image:url(meldium.png)
-
----
 # Share access, not passwords!
 ## - Okta
 ## - OneLogin
 ## - Dashlane
 
 ---
-class: invert, black, center, middle
-# Dynamic infrastructure
-
----
-class: bgh
-background-image:url(nginx_1.png)
+# Scanners:
+## - Gitrob (https://github.com/michenriksen/gitrob)
+## - Talisman (https://github.com/thoughtworks/talisman)
+## - Snyk (Finds and fixes vulnerabilities in your dependencies)
+## - Scout2 (Security auditing tool for AWS environments)
 ???
-- autoscalign!!! sleep well at night :-) now auto-scale across AZs (multi-homed systems, always working)
-- Oprah effect
+- pem files, rsa, awscreds, shell hist, mysql hist
+- Gitrob REACTIVE: works for existing GitHub repositories (requires push)
+- Talisman PROACTIVE: any repository
 
 ---
-background-image:url(consul.png)
-
----
-class: bgh
-background-image:url(nginx_2.png)
+background-image:url(pathod.png)
 ???
-if you define healthchecks, consul will not return dead instances!
+- pathod - any response that violate HTTP specification
+- pathoc - any request
+- I managed to kill vert.x this way.
+- low-hanging fruits :-) usually, there are many!
 
 ---
-class: bgh
-background-image:url(nginx_3.png)
-
----
-class: bgh
-background-image:url(nginx_4.png)
-
----
-class: bgh
-background-image:url(nginx_5.png)
+background-image:url(hackerone.png)
 ???
-Some values are hard-coded. The goal is for organizations of any size to use git as the backing store, audit trail, and access control mechanism for configuration changes and Consul as the delivery mechanism.
+MUCH CHEAPER THAN PRO PENETRATION TESTING!
 
 ---
-class: bgh
-background-image:url(nginx_6.png)
-???
-- Application is 100% configuration agnostic. All configuration is passed as environment variables.
-- Consul DNS! 0 TTL by default :-) Nice! Prevents routing to unhealty nodes. Random robin from healty notes.
+background-image:url(bugcrowd.png)
 
 ---
-background-image:url(12factor_env.png)
+class: center, middle
+# Pre-mortems and Risk storming
 ???
-The environment is right there. Use it.
+Thinking like a bad guy.
 
 ---
 class: bgh
@@ -1554,13 +1543,13 @@ background-image:url(jenkins_pipeline.png)
 
 ---
 class: center, middle
-# Reliable deployments require Reliable Deployment System
+# Pipeline is critical part of your production infrastructure
 ???
-pipeline is critical, because critical deployments go through it.
+- all changes go through it.
 
 ---
 class: center, middle
-# All changes to Jenkins go through version control and Jenkins can be rebuilt in automated fashion
+# All changes to Pipeline must be version controlled.
 ???
 - 3W
 - Means there are no manual changes, plugins installs via UI.
@@ -1591,7 +1580,7 @@ background-image:url(gradle-jenkins-plugin.png)
 
 ---
 class: center, middle
-# TTD and TTR metrics are defined by SLA of the most critical system
+# Pipeline's TTD and TTR = TTD and TTR of your most critical production system
 ???
 - HA across AZ
 - Are you 100% your "recovery plan" works?
@@ -1607,15 +1596,11 @@ class: center, middle
 
 ---
 class: center, middle
-# Slaves survive the crash
+# All changes to Pipeline are tested
 
 ---
 class: center, middle
-# All changes to Jenkins are pre-flight tested
-
----
-class: center, middle
-# Each team has their own Jenkins and owns underlying infrastructure
+# Each team has its own Pipeline and owns underyling infrastructure
 ???
 - 100 Apps are build on a single Jenkins
 - 100 Jenkins instances on single VM - good luck!
@@ -1626,14 +1611,7 @@ class: center, middle
 
 ---
 class: center, middle
-# Jenkins is either auto-scalable or easy to scale
-### Consider [Jenkins EC2 plugin](https://wiki.jenkins-ci.org/display/JENKINS/Amazon+EC2+Plugin)
-???
-runs new slaves automatically on EC2 and kills them when not needed.
-
----
-class: center, middle
-# Jenkins is at the close proximity with dependencies (which are redundant)
+# Jenkins is at the close proximity with dependencies (that are redundant)
 ???
 - DockerHub? Local artifact repository?
 - GitHub fails every year.
@@ -1668,7 +1646,6 @@ class: manybulls
 .l50[
 ## Web Testing
 ### headless chrome
-### xvfb
 ### browsersync
 ### saucelabs / browserstack
 ### backtop.js
@@ -1684,7 +1661,6 @@ class: manybulls
 ### (predictive) auto-scaling
 ### continuous security
 ## Other
-### keybase
 ### mailtrap
 ### dependabot
 ### ngrok / localtunnel
@@ -1728,136 +1704,90 @@ class: manybulls
 - Simple means you can always change it later.
 - E.g. adding RAM and CPU instead of running test in parallel.
 
+---
+class: center, middle
+# Accelerating delivery without using technology
+### (Bonus chapter)
+
 
 ---
 class: center, middle
-# Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.
+## All we are doing is looking at the timeline from the moment a customer gives us an order to the point when we collect the cash. And we are reducing that timeline by removing the nonvalue-added wastes.
+## — Taiichi Ohno, the father of “Lean Manufacturing”
 
 ---
 class: center, middle
-# Continuous Security
-???
-Emergent trend - SecDevOps
-
----
-# Scanners:
-## - Gitrob (https://github.com/michenriksen/gitrob)
-## - Talisman (https://github.com/thoughtworks/talisman)
-## - Snyk (Finds and fixes vulnerabilities in your dependencies)
-## - Scout2 (Security auditing tool for AWS environments)
-???
-- pem files, rsa, awscreds, shell hist, mysql hist
-- Gitrob REACTIVE: works for existing GitHub repositories (requires push)
-- Talisman PROACTIVE: any repository
-
----
-background-image:url(gauntlt.png)
-???
-- open port scanner, xss, sql injection, session id length and crypto-function, secure cookies
-- checkout the Gitproject with example attacks, modify them and voila!
-
----
-class: medium
-```gherkin
-Scenario: Verify server is open on expected set of port
-  When I launch an "nmap" attack with:
-    """
-    nmap -F <hostname>
-    """
-  Then the output should match:
-    """
-    80/tcp\s+open
-    """
-
-Scenario: Verify that there are no unexpected ports open
-  When I launch an "nmap" attack with:
-    """
-    nmap -F <hostname>
-    """
-  Then the output should not contain:
-    """
-    22/tcp
-    25/tcp
-    """
-```
-
----
-class: medium
-```gherkin
-Scenario: Ensure no anonymous certificates
-  When I launch an "sslyze" attack with:
-    """
-    python <sslyze_path> <hostname>:443
-    """
-  Then the output should not contain:
-    """
-    Anon
-```
-???
-- I ran scanner on my EC2 machines and ALL of them had heartbleed-vulnerable OpenSSL :-)
-- April 2014
-
----
-background-image:url(pathod.png)
-???
-- pathod - any response that violate HTTP specification
-- pathoc - any request
-- I managed to kill vert.x this way.
-- low-hanging fruits :-) usually, there are many!
-
----
-background-image:url(hackerone.png)
-???
-MUCH CHEAPER THAN PRO PENETRATION TESTING!
-
----
-background-image:url(bugcrowd.png)
+## All we are doing is looking at the timeline from **the moment a customer gives us an order to the point when we collect the cash**. And we are reducing that timeline by removing the nonvalue-added wastes.
+## — Taiichi Ohno, the father of “Lean Manufacturing”
 
 ---
 class: center, middle
-![](mozilla-wiki.png)
-### [WebAppSec/Secure Coding Guidelines](https://wiki.mozilla.org/WebAppSec/Secure_Coding_Guidelines)
+## All we are doing is looking at the timeline from the moment a customer gives us an order to the point when we collect the cash. And we are reducing that timeline by removing the nonvalue-added **wastes**.
+## — Taiichi Ohno, the father of “Lean Manufacturing”
 
 ---
-class: center, middle
-![](owasp_logo.png)
-### [OWASP Application Security Verification Standard Project](https://www.owasp.org/images/6/67/OWASPApplicationSecurityVerificationStandard3.0.pdf)
+# Wastes of Software Development
+
+--
+
+## – Partially done work
 ???
-Guidelines.
+- stop starting, start finishing, Little's Law
 
----
-class: bgh
-background-image:url(owasp.png)
+--
 
----
-class: center, middle
-## The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free security tools and is actively maintained by hundreds of international volunteers*. It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications. Its also a great tool for experienced pentesters to use for manual security testing.
-
----
-background-image:url(zap-webdriver.png)
-
----
-class: center, middle
-# Pre-mortems and Risk storming
+## – Overproduction
 ???
-Thinking like a bad guy.
+- extra / unused features
+- code/solution "for the future", before it's actually required
+- producing more features than QA can handle.
+- writing more user stories than needed for the next Sprint
+- overly complex solutions (accidental complexity)
+- wrong write vs. rent decisions (nocode)
+
+--
+
+## – Non-value added activities
+???
+- setup time, onboarding
+- spending time on understanding shitty code (high discovery cost)
+- refactoring functionality that does not change
+- meetigs without assigning tasks and responsibilities
+- optimizing part of the process that is not a bottleneck (optimize the whole, avoid suboptimizaiton)
+
+--
+
+## – Delays / waiting
+???
+- long-running tests
+- waiting for code review, waiting for approval
+- waiting someone to help you complete user story (e.g testing, ops) because of OVERSPECIALIZATION
+- unplanned work (downtime, defects)
+
+--
+
+## – Rework
+???
+- misunderstood/miscommunicated requirements, fixing defects, fixing someone else's spaghetti code, too much upfront design
 
 ---
-# Books
+class: center, middle
+# Value stream mapping
+
+---
+## Books
 ### - Continuous Delivery
 ### - The Phoenix Project
 ### - Lean Enteprise
+### - Kanban: Successful Evolutionary Change for Your Technology Business
+### - Implementing Lean Software Development: From Concept to Cash
 
-# Resources
-### - ThoughtWorks Technology Radar
-### - The State of DevOps Report
-
----
-class: center, middle
-# Thank you!
+## Resources
+### - ThoughtWorks Technology Radar &amp; The State of DevOps Report
 
 <!--
 Demos:
+- Ngrok
 - Transcrypt
 - Keybase
 
